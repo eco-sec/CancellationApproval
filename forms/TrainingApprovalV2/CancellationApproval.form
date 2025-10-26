@@ -1,0 +1,443 @@
+{
+    "id": "CancellationApproval",
+    "schemaVersion": "1.1.0",
+    "name": "CancellationApproval",
+    "revision": "v1",
+    "type": "task",
+    "readOnly": false,
+    "content": [
+        {
+            "id": "employee_info",
+            "type": "section",
+            "title": "Employee Info",
+            "content": [
+                {
+                    "id": "test",
+                    "type": "string",
+                    "label": "Employee Badge No",
+                    "readOnly": true,
+                    "value": "${context.employeeId}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "employee_name",
+                    "type": "string",
+                    "label": "Employee Name",
+                    "readOnly": true,
+                    "value": "${context.employeeName}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "employee_mail",
+                    "type": "string",
+                    "label": "Employee Mail",
+                    "readOnly": true,
+                    "value": "${context.employeeMail}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "employ_position_title_",
+                    "type": "string",
+                    "label": "Employ Position(Title)",
+                    "readOnly": true,
+                    "value": "${context.employeePosition}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "employee_organization_id",
+                    "type": "string",
+                    "label": "Employee Organization ID",
+                    "readOnly": true,
+                    "value": "${context.employeeOrganizationId}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "employee_organization",
+                    "type": "string",
+                    "label": "Employee Organization",
+                    "readOnly": true,
+                    "value": "${context.employeeOrganizationDesc}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "grade_level",
+                    "type": "string",
+                    "label": "Grade Level",
+                    "readOnly": true,
+                    "value": "${context.gradeLevel}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "cost_center",
+                    "type": "string",
+                    "label": "Cost center",
+                    "readOnly": true,
+                    "value": "${context.employeeInfo.costCenter}",
+                    "constraints": {
+                        "required": false
+                    }
+                }
+            ]
+        },
+        {
+            "id": "training_request_details",
+            "type": "section",
+            "title": "Training Request Details",
+            "content": [
+                {
+                    "id": "request_id",
+                    "type": "string",
+                    "label": "Request ID",
+                    "readOnly": true,
+                    "value": "${context.requestId}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "training_type_id",
+                    "type": "string",
+                    "label": "Training Type ID",
+                    "readOnly": true,
+                    "value": "${context.trainingTypeId}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "training_type_desc",
+                    "type": "string",
+                    "label": "Training Type Desc",
+                    "readOnly": true,
+                    "value": "${context.trainingTypeDesc}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "class_id",
+                    "type": "string",
+                    "label": "Class ID",
+                    "readOnly": true,
+                    "value": "${context.classId}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "class_title",
+                    "type": "string",
+                    "label": "Class Title",
+                    "readOnly": true,
+                    "value": "${context.classTitle}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "class_description",
+                    "type": "string",
+                    "label": "Class Description",
+                    "readOnly": true,
+                    "value": "${context.classDescription}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "class_start_date",
+                    "type": "string",
+                    "label": "Class Start Date",
+                    "readOnly": true,
+                    "value": "${context.classStartDateDesc}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "class_end_date",
+                    "type": "string",
+                    "label": "Class End Date",
+                    "readOnly": true,
+                    "value": "${context.classEndDateDesc}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "class_total_days",
+                    "type": "string",
+                    "label": "Class Total Days",
+                    "readOnly": true,
+                    "value": "${context.classTotalDays}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "country",
+                    "type": "string",
+                    "label": "Country",
+                    "readOnly": true,
+                    "value": "${context.country}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "city",
+                    "type": "string",
+                    "label": "City",
+                    "readOnly": true,
+                    "value": "${context.city}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "training_center_name",
+                    "type": "string",
+                    "label": "Training Center Name",
+                    "readOnly": true,
+                    "value": "${context.trainingCenterName}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "training_duration",
+                    "type": "string",
+                    "label": "Training Duration",
+                    "readOnly": true,
+                    "value": "${context.trainingDuration}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "training_language",
+                    "type": "string",
+                    "label": "Training Language",
+                    "readOnly": true,
+                    "value": "${context.trainingLanguage}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "price",
+                    "type": "string",
+                    "label": "Price",
+                    "readOnly": true,
+                    "value": "${context.price}",
+                    "constraints": {
+                        "required": false
+                    }
+                },
+                {
+                    "id": "currency_",
+                    "type": "string",
+                    "label": "Currency ",
+                    "readOnly": true,
+                    "value": "${context.currency}",
+                    "constraints": {
+                        "required": false
+                    }
+                }
+            ]
+        },
+        {
+            "id": "approval_list",
+            "type": "section",
+            "title": "Department Manager",
+            "content": [
+                {
+                    "id": "approval",
+                    "type": "collection",
+                    "title": "",
+                    "addEnabled": false,
+                    "deleteEnabled": false,
+                    "value": "${context.filteredApprovers}",
+                    "content": [
+                        {
+                            "id": "approver_id",
+                            "type": "string",
+                            "label": "Approver Id",
+                            "readOnly": true,
+                            "value": "${item.Agent}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "agent_name",
+                            "type": "string",
+                            "label": "Approver Name",
+                            "readOnly": true,
+                            "value": "${item.AgentName}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "position_name",
+                            "type": "string",
+                            "label": "Position name",
+                            "readOnly": true,
+                            "value": "${item.PositionName}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "level",
+                            "type": "string",
+                            "label": "Level",
+                            "readOnly": true,
+                            "value": "${item.Level}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "mail",
+                            "type": "string",
+                            "label": "Mail",
+                            "readOnly": true,
+                            "value": "${item.AgentEmail}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "userid",
+                            "type": "string",
+                            "label": "UserId",
+                            "readOnly": true,
+                            "value": "${item.UserID}",
+                            "constraints": {
+                                "required": false
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "all_list",
+            "type": "section",
+            "title": "Notification List",
+            "content": [
+                {
+                    "id": "approval",
+                    "type": "collection",
+                    "title": "",
+                    "addEnabled": false,
+                    "deleteEnabled": false,
+                    "value": "${context.approverList.ApproverSet.Approver}",
+                    "content": [
+                        {
+                            "id": "approver_id",
+                            "type": "string",
+                            "label": "Approver Id",
+                            "readOnly": true,
+                            "value": "${item.Agent}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "agent_name",
+                            "type": "string",
+                            "label": "Approver Name",
+                            "readOnly": true,
+                            "value": "${item.AgentName}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "position_name",
+                            "type": "string",
+                            "label": "Position name",
+                            "readOnly": true,
+                            "value": "${item.PositionName}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "mail",
+                            "type": "string",
+                            "label": "Mail",
+                            "readOnly": true,
+                            "value": "${item.AgentEmail}",
+                            "constraints": {
+                                "required": false
+                            }
+                        },
+                        {
+                            "id": "userid",
+                            "type": "string",
+                            "label": "UserId",
+                            "readOnly": true,
+                            "value": "${item.UserID}",
+                            "constraints": {
+                                "required": false
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "Comment",
+            "type": "section",
+            "title": "Approver’s Comment",
+            "content": [
+                {
+                    "id": "approver_comment",
+                    "type": "string",
+                    "label": "Comment",
+                    "readOnly": false,
+                    "value": "${context.ApproverComment}",
+                    "control": {
+                        "type": "TextArea",
+                        "properties": {
+                            "height": "small"
+                        }
+                    },
+                    "constraints": {
+                        "required": true
+                    }
+                }
+            ]
+        }
+    ],
+    "decisions": [
+        {
+            "id": "approval",
+            "text": "Accept The Excuse",
+            "decisionType": "positive"
+        },
+        {
+            "id": "reject",
+            "text": "Reject The Excuse",
+            "decisionType": "negative"
+        }
+    ]
+}
