@@ -62,6 +62,22 @@ function formatDateEnYYYYMMDD(dateStr) {
 
 
 function formatDateEn(dateStr) {
+    // Handle YYYYMMDD format (e.g., "20250601")
+    if (dateStr.length === 8 && dateStr.indexOf('/') === -1) {
+        var year = dateStr.substring(0, 4);
+        var month = dateStr.substring(4, 6);
+        var day = dateStr.substring(6, 8);
+
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+                          "July", "August", "September", "October", "November", "December"];
+
+        var monthIndex = parseInt(month, 10) - 1;
+        var monthName = monthNames[monthIndex];
+
+        return parseInt(day, 10) + ' ' + monthName + ' ' + year;
+    }
+
+    // Handle DD/MM/YYYY format (e.g., "01/06/2025")
     var parts = dateStr.split('/');
     if (parts.length !== 3) {
         return 'Invalid date or time format';
@@ -81,10 +97,26 @@ function formatDateEn(dateStr) {
     var monthIndex = parseInt(month, 10) - 1;
     var monthName = monthNames[monthIndex];
 
-    return parseInt(day) + ' ' + monthName + ' ' + year;
+    return parseInt(day, 10) + ' ' + monthName + ' ' + year;
 }
 
 function formatDateAr(dateStr) {
+    // Handle YYYYMMDD format (e.g., "20250601")
+    if (dateStr.length === 8 && dateStr.indexOf('/') === -1) {
+        var year = dateStr.substring(0, 4);
+        var month = dateStr.substring(4, 6);
+        var day = dateStr.substring(6, 8);
+
+        var monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                          "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+
+        var monthIndex = parseInt(month, 10) - 1;
+        var monthName = monthNames[monthIndex];
+
+        return parseInt(day, 10) + ' ' + monthName + ' ' + year;
+    }
+
+    // Handle DD/MM/YYYY format (e.g., "01/06/2025")
     var parts = dateStr.split('/');
     if (parts.length !== 3) {
         return 'Invalid date or time format';
@@ -104,7 +136,7 @@ function formatDateAr(dateStr) {
     var monthIndex = parseInt(month, 10) - 1;
     var monthName = monthNames[monthIndex];
 
-    return parseInt(day) + ' ' + monthName + ' ' + year;
+    return parseInt(day, 10) + ' ' + monthName + ' ' + year;
 }
 
 

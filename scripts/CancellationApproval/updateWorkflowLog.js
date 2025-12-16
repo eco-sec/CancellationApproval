@@ -1,3 +1,32 @@
+// Date formatting function - MUST be defined before use
+function formatDateToYYYYMMDD(dateStr) {
+    try {
+        if (!dateStr) {
+            return "";
+        }
+
+        // Handle YYYYMMDD format (already correct format)
+        if (typeof dateStr === "string" && dateStr.length === 8 && dateStr.indexOf('/') === -1 && !isNaN(dateStr)) {
+            return dateStr;
+        }
+
+        // Handle DD/MM/YYYY format
+        if (typeof dateStr === "string" && dateStr.indexOf("/") !== -1) {
+            var parts = dateStr.split("/");
+            if (parts.length === 3) {
+                var day = parts[0];
+                var month = parts[1];
+                var year = parts[2];
+                return year + month + day; // Format: YYYYMMDD
+            }
+        }
+
+        return "";
+    } catch (e) {
+        return "";
+    }
+}
+
 if ($.context.DecisionText === "Rejected") {
 	// If the decision is "reject", set status to "Rejected"
 	$.context.Status = "Rejected";
@@ -55,25 +84,3 @@ $.context.workflowRequest = {
 	currentApproverList: $.context.filteredApprovers || [],
 	ApproverCommentList: $.context.ApproverCommentList || []
 };
-
-
-function formatDateToYYYYMMDD(dateStr) {
-    try {
-        if (!dateStr) {
-            return "";
-        }
-        var parts = dateStr.split("/");
-        if (parts.length !== 3) {
-            return dateStr; // Return input if not in expected format
-        }
-        var day = parts[0];
-        var month = parts[1];
-        var year = parts[2];
-
-        return year + month + day; // Format: YYYYMMDD
-    } catch (e) {
-        return dateStr; // Return original value if any unexpected error
-    }
-}
-
-

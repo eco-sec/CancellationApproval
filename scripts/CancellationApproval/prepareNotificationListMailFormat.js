@@ -1,202 +1,89 @@
 // Check if currentApprover is defined and has data
-// Check if there are any MailfilteredApprovers left or if the current approver data is invalid
 if (!$.context.MailfilteredApprovers || $.context.MailfilteredApprovers.length === 0 ||
 	!$.context.MailfilteredApprovers[0] || !$.context.MailfilteredApprovers[0].AgentName || !$.context.MailfilteredApprovers[0].Agent) {
 	$.context.NoMoreMailApprover = true;
-	//  return; // Exit if no approvers left or current approver data is invalid
 } else {
 
 	// Get the current approver and remove it from the list
 	var currentApprover = $.context.MailfilteredApprovers.shift();
-var approverDepartmentTitle;
 
-if (currentApprover.Level === 2) {
-    approverDepartmentTitle = "Investigation Department";
-} else if (currentApprover.Level === 3) {
-    approverDepartmentTitle = "Training Coordinator Department";
-} else {
-    approverDepartmentTitle = "";
-}
+	var approverDepartmentTitle;
+	if (currentApprover.Level === "2") {
+		approverDepartmentTitle = "Investigation Department";
+	} else if (currentApprover.Level === "3") {
+		approverDepartmentTitle = "Training Coordinator Department";
+	} else {
+		approverDepartmentTitle = "Notification";
+	}
 
 	$.context.NoMoreMailApprover = false;
 
-	var currentApproverAgentName = currentApprover.AgentName;
-	var currentApproverAgent = currentApprover.Agent;
 	var currentApproverMail = currentApprover.AgentEmail;
-	var trainingTypeDesc = $.context.trainingTypeDesc;
-	var classTitle = $.context.classTitle;
-	var classStartDate = $.context.classStartDateDesc;
-	var classEndDate = $.context.classEndDateDesc;
-	var classStartDateAr = $.context.classStartDateDescAr;
-	var classEndDateAr = $.context.classEndDateDescAr;
-	var currentLevelDesc = $.context.currentLevel;
-	var link =
-		"https://flpnwc-p6lg1ba5nh.dispatcher.sa1.hana.ondemand.com/sites?siteId=a0f37b2b-c361-40dd-991a-2f8d130fa69d#WorkflowTask-DisplayMyInbox&/detail/NA/97817543-268e-11ef-9baf-fa163e8cf11f/TaskCollection(SAP__Origin='NA',InstanceID='97817543-268e-11ef-9baf-fa163e8cf11f')";
-
-	// Construct the HTML content
 	var empNo = $.context.employeeId;
-	var trainingType = parseInt($.context.trainingTypeId, 10); // Parse trainingTypeId as an integer
-	var level = parseInt($.context.currentLevel, 10); // Parse level as an integer
 
+	var decisionStatus, subject, decisionMessage;
 	if ($.context.isRejected) {
-		var maildecision = "You are receiving this notification due to the Rejection of No Show (Training) by Department Manager"
-		var subject = "No Show Rejection for " + $.context.employeeName;
-
+		decisionStatus = "Rejected";
+		subject = "We Learn – Training Cancellation Request Rejection for " + $.context.employeeName;
+		decisionMessage = "The training cancellation request has been <span class='orange'>rejected</span> by Department Manager";
 	} else {
-		var maildecision = "You are receiving this notification due to the Acceptance of No Show (Training) by Department Manager"
-		var subject = "No Show Approved for " + $.context.employeeName;
+		decisionStatus = "Approved";
+		subject = "We Learn – Training Cancellation Request Notification for " + $.context.employeeName;
+		decisionMessage = "The training cancellation request has been <span class='orange'>approved</span> by Department Manager";
 	}
 
-	var htmlContent =
-		"<!DOCTYPE html>" +
-		"<html lang='en'>" +
-		"<head>" +
-		"<meta charset='UTF-8'>" +
-		"<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-		"<title>Email Template</title>" +
-		"<style>" +
-		"body {" +
-		"font-family: Arial, sans-serif;" +
-		"color: #000;" +
-		"margin: 0;" +
-		"padding: 0;" +
-		"}" +
-		".container {" +
-		"width: 100%;" +
-		"max-width: 600px;" +
-		"margin: 0 auto;" +
-		"border: 1px solid #000;" +
-		"}" +
-		".header, .footer {" +
-		"text-align: center;" +
-		"padding: 10px;" +
-		"}" +
-		".content {" +
-		"padding: 20px;" +
-		"}" +
-		"table {" +
-		"width: 100%;" +
-		"border-collapse: collapse;" +
-		"margin-bottom: 20px;" +
-		"}" +
-		"table, th, td {" +
-		"border: 1px solid #000;" +
-		"}" +
-		"th, td {" +
-		"padding: 10px;" +
-		"text-align: left;" +
-		"}" +
-		".note {" +
-		"font-size: 12px;" +
-		"color: #666;" +
-		"}" +
-		"h4 {" +
-		"margin-bottom: 0.5rem;" +
-		"}" +
-		"</style>" +
-		"</head>" +
-		"<body>" +
-		"<div class='container'>" +
-		"<div class='header'>" +
-		"<img src='https://www.se.com.sa/dist/browser/assets/images/sec-logo-new.png' width='200' alt='Saudi Electricity Company' />" +
-		"</div>" +
-		"<div class='content'>" +
-		"<p><strong>"+ approverDepartmentTitle +"</strong></p>" +
+	var header =
+		"<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+		"<title>We Learn - Training Cancellation Notification</title><style>@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');" +
+		"@font-face{font-family:'GE SS';src:url('https://firebasestorage.googleapis.com/v0/b/bau-website-1c93b.appspot.com/o/alfont_com_GE-SS-Two-Medium.otf?alt=media&token=9d848eb1-0bd0-4bf1-8423-bc943911ef60') format('otf');font-weight:normal;font-style:normal;}" +
+		".arabic{font-family:'GE SS';}.roboto-regular{font-family:'Roboto',sans-serif;font-weight:400;font-style:normal;}" +
+		".roboto-medium{font-family:'Roboto',sans-serif;font-weight:500;font-style:normal;}body{font-family:'Roboto',sans-serif;color:#000;margin:0;padding:0;font-weight:500!important;}" +
+		".container{width:100%;max-width:600px;margin:auto;border:1px solid #e5e5e5}.header,.footer{text-align:center}.content{padding:20px}" +
+		"table{width:100%;border-collapse:collapse;margin-bottom:20px}th{border:1px solid #000;padding:10px;text-align:left;font-weight:500!important;}" +
+		"h4,p{font-weight:500!important;}.text-center{text-align:center}.blue{color:#1e4691}.orange{color:#ED7D31}" +
+		".header img,.footer img{width:100%;display:block;max-width:100%;height:auto}" +
+		"</style></head><body><div class='container'><div class='header'><img src='https://www.se.com.sa/stylelibrary/WeLearn/WeLearnEnglishHeader.png' alt='Saudi Electricity Company'/></div>";
 
-		"<p><strong>" + maildecision + "</strong></p>" +
+	var footer = "<footer><p class='blue text-center'>If you have any questions about this notification, please create AMER request &quot;service number 62994&quot; or contact us by Human Resource unified number 333.</p>" +
+		"<p class='blue text-center'><strong>Human Resources & Corporate Services Business Line<br>HR Development Sector</strong></p>" +
+		"<p class='orange text-center'>Note: This email was sent automatically by the system, please do not reply to it.</p></div>" +
+		"<div class='footer'><img src='https://www.se.com.sa/stylelibrary/WeLearn/WeLearnFooter.png' alt='Saudi Electricity Company'/></div></footer></div></body></html>";
 
-		"<h4>Manager Details:</h4>" +
-		"<table>" +
-		"<tr>" +
-		"<td>Manager Badge Number</td>" +
-		"<td>" + $.context.lastApproverData.Agent + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Manager Name</td>" +
-		"<td>" + $.context.lastApproverData.agentName + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Manager Position</td>" +
-		"<td>" + $.context.lastApproverData.positionName + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Comments</td>" +
-		"<td>" + $.context.lastApproverData.comment + "</td>" +
-		"</tr>" +
-		"</table>" +
+	var htmlContentEn = header +
+		"<div class='content'><p class='text-center blue'><strong>Dear " + approverDepartmentTitle + ",</strong></p>" +
+		"<p class='text-center blue'>" + decisionMessage + "</p>" +
 
-		"<h4>Employee/Event Details:</h4>" +
-		"<table>" +
-		"<tr>" +
-		"<td>Badge no.</td>" +
-		"<td>" + $.context.employeeInfo.badgeNo + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Employee Name</td>" +
-		"<td>" + $.context.employeeInfo.name + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Job Title</td>" +
-		"<td>" + $.context.employeeInfo.jobName + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Grade</td>" +
-		"<td>" + $.context.employeeInfo.grade + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Nationality</td>" +
-		"<td>" + $.context.employeeInfo.nationality + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Qualification</td>" +
-		"<td>" + $.context.employeeInfo.qualification + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Development Program</td>" +
-		"<td>" + $.context.employeeInfo.developmentProgram + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Course Name</td>" +
-		"<td>" + $.context.classTitle + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>SEC Date of Entry</td>" +
-		"<td>" + $.context.employeeInfo.secDateEntry + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Business Line</td>" +
-		"<td>" + $.context.employeeInfo.businessLine + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Sector</td>" +
-		"<td>" + $.context.employeeInfo.sector + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Department</td>" +
-		"<td>" + $.context.employeeInfo.department + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Division</td>" +
-		"<td>" + $.context.employeeInfo.division + "</td>" +
-		"</tr>" +
-		"<tr>" +
-		"<td>Personnel Subarea</td>" +
-		"<td>" + $.context.employeeInfo.personnelSubarea + "</td>" +
-		"</tr>" +
-		"</table>" +
+		"<h4 class='text-center blue'>Manager Decision Details:</h4><table>" +
+		"<tr><th class='blue'>Manager Badge Number</th><th class='orange'>" + $.context.lastApproverData.Agent + "</th></tr>" +
+		"<tr><th class='blue'>Manager Name</th><th class='orange'>" + $.context.lastApproverData.agentName + "</th></tr>" +
+		"<tr><th class='blue'>Manager Position</th><th class='orange'>" + $.context.lastApproverData.positionName + "</th></tr>" +
+		"<tr><th class='blue'>Comments</th><th class='orange'>" + $.context.lastApproverData.comment + "</th></tr>" +
+		"<tr><th class='blue'>Decision Status</th><th class='orange'>" + decisionStatus + "</th></tr></table>" +
 
-		"<p class='note'>" +
-		"<strong>Note:</strong> An employee not attending the course shall be liable for legal consequences and the course costs could be deducted from the employee as per Saudi Electricity Company policy: " +
-		"<a href='https://secweb/Admin/activities/hr/FormsDocs/%D8%B6%D9%88%D8%A7%D8%A8%D8%B7%20%D8%A7%D9%84%D8%AA%D8%B1%D8%B4%D9%8A%D8%AD%20%D9%84%D9%84%D8%A8%D8%B1%D8%A7%D9%85%D8%AC%20%D8%A7%D9%84%D8%AA%D8%AF%D8%B1%D9%8A%D8%A8%D9%8A%D8%A9%20%D9%88%D8%A7%D9%84%D8%AA%D8%B7%D9%88%D9%8A%D8%B1%D9%8A%D8%A9%20%D8%A7%D9%84%D9%82%D8%B5%D9%8A%D8%B1%D8%A9.pdf' target='_blank'>HR Policy on No-Show for Training</a>." +
-		"</p>" +
-		"</div>" +
-		"<div class='footer'>" +
-		"<p>Thanks and Regards<br>Human Resources & Corporate Services</p>" +
-		"<p class='note'>NOTE: THIS IS A SYSTEM GENERATED EMAIL. PLEASE DO NOT REPLY.</p>" +
-		"</div>" +
-		"</div>" +
-		"</body>" +
-		"</html>";
+		"<h4 class='text-center blue'>Employee Information:</h4><table>" +
+		"<tr><th class='blue'>Badge No.</th><th class='orange'>" + $.context.employeeInfo.EmpPernr + "</th></tr>" +
+		"<tr><th class='blue'>Name</th><th class='orange'>" + $.context.employeeInfo.EmpEnglishName + "</th></tr>" +
+		"<tr><th class='blue'>Division</th><th class='orange'>" + $.context.employeeInfo.DivisionEn + "</th></tr>" +
+		"<tr><th class='blue'>Department</th><th class='orange'>" + $.context.employeeInfo.DepartmentEn + "</th></tr>" +
+		"<tr><th class='blue'>Business Line</th><th class='orange'>" + $.context.employeeInfo.BusinessLineEn + "</th></tr>" +
+		"<tr><th class='blue'>Nationality</th><th class='orange'>" + $.context.employeeInfo.NationalityEn + "</th></tr>" +
+		"<tr><th class='blue'>Grade Code</th><th class='orange'>" + $.context.employeeInfo.GradeCode + "</th></tr>" +
+		"<tr><th class='blue'>Personnel Subarea</th><th class='orange'>" + $.context.employeeInfo.PerssubareaText + "</th></tr>" +
+		"<tr><th class='blue'>Work Location</th><th class='orange'>" + $.context.employeeInfo.WlTextEn + "</th></tr>" +
+		"<tr><th class='blue'>Position</th><th class='orange'>" + $.context.employeeInfo.PosTextEn + "</th></tr>" +
+		"<tr><th class='blue'>Hiring Date</th><th class='orange'>" + $.context.employeeInfo.HiringDate + "</th></tr>" +
+		"<tr><th class='blue'>Qualification</th><th class='orange'>" + $.context.employeeInfo.QualEn + "</th></tr>" +
+		"<tr><th class='blue'>Development Program</th><th class='orange'>" + $.context.employeeInfo.DevProgEn + "</th></tr></table>" +
+
+		"<h4 class='text-center blue'>Training Event Details (Cancellation Request):</h4><table>" +
+		"<tr><th class='blue'>Class ID</th><th class='orange'>" + $.context.classId + "</th></tr>" +
+		"<tr><th class='blue'>Class Name</th><th class='orange'>" + $.context.classTitle + "</th></tr>" +
+		"<tr><th class='blue'>Start Date</th><th class='orange'>" + $.context.classStartDateDesc + "</th></tr>" +
+		"<tr><th class='blue'>End Date</th><th class='orange'>" + $.context.classEndDateDesc + "</th></tr>" +
+		"<tr><th class='blue'>Location ID</th><th class='orange'>" + $.context.facilityId + "</th></tr>" +
+		"<tr><th class='blue'>Location Description</th><th class='orange'>" + $.context.facilityDesc + "</th></tr>" +
+		"<tr><th class='blue'>Course Price</th><th class='orange'>" + $.context.classPrice + " " + $.context.classCurrency + "</th></tr></table></div>" +
+		footer;
 
 	// Create the MailRequestBody JSON object
 	var MailNotificationRequestBody = {
@@ -204,10 +91,10 @@ if (currentApprover.Level === 2) {
 			"Notifications": {
 				"EmpNo": empNo,
 				"Email": currentApproverMail,
-				"TrainingType": parseInt(trainingType, 10),
-				"Level": 1, //parseInt(level,10),
+				"TrainingType": parseInt($.context.trainingTypeId, 10),
+				"Level": 1,
 				"Subject": subject,
-				"HtmlContent": htmlContent
+				"HtmlContent": htmlContentEn
 			}
 		}
 	};
