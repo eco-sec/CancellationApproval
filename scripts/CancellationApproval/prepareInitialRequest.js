@@ -5,7 +5,7 @@ $.context.LmsRequestBody = {
 	"enrollmentStatus": [{
 		"scheduleID": Math.floor(parseInt($.context.classId)), // Dynamically read from context and parsed as an integer
 		"userID": $.context.employeeId, // Dynamically read from context
-		"newEnrollmentStatusID": "ENROLL_NO_SHOW_In_Progress", // Conditional check for the status
+		"newEnrollmentStatusID": "Request_to_Cancel_By_Employee", // Conditional check for the status
 		"cancellationReasonID": "Work Commitments"
 	}]
 };

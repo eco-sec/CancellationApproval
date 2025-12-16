@@ -5,9 +5,16 @@ function formatDateToYYYYMMDD(dateStr) {
             return "";
         }
 
-        // Handle YYYYMMDD format (already correct format)
-        if (typeof dateStr === "string" && dateStr.length === 8 && dateStr.indexOf('/') === -1 && !isNaN(dateStr)) {
-            return dateStr;
+        // Check if date is in SAP OData format: Date(milliseconds)
+        if (typeof dateStr === "string" && dateStr.indexOf("Date(") === 0) {
+            var timestamp = dateStr.match(/Date\((\d+)\)/);
+            if (timestamp && timestamp[1]) {
+                var date = new Date(parseInt(timestamp[1]));
+                var year = date.getFullYear();
+                var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                var day = ("0" + date.getDate()).slice(-2);
+                return year + month + day; // Format: YYYYMMDD
+            }
         }
 
         // Handle DD/MM/YYYY format
@@ -38,7 +45,7 @@ var withdrawalReason;
 
 if (isRejected) {
     // Rejection: Status = Enrolled_by_Admin–IT_2002_Succ, Reason = empty
-    enrollmentStatusID = "Enrolled_by_Admin–IT_2002_Succ";
+    enrollmentStatusID = $.context.OrginalLMSStatus;
     withdrawalReason = "";
 } else {
     // Approval: Status = Cancelled_By_Employee, Reason = Cancelled_By_Employee
@@ -63,10 +70,6 @@ $.context.cancellationCpiRequestBody = {
     "classId": $.context.classId,
     "BeginDate": formatDateToYYYYMMDD($.context.classStartDate),  // Convert to YYYYMMDD
     "EndDate": formatDateToYYYYMMDD($.context.classEndDate),      // Convert to YYYYMMDD
-    "Decision": $.context.decisionValue  // Holds "APPROVED" or "REJECTED"
+    "Decision": enrollmentStatusID  // Holds "APPROVED" or "REJECTED"
 };
 
-// Set HANA request body
-$.context.hanaRequestBody = {
-    "STATUS": $.context.decisionText  // Holds "APPROVED" or "REJECTED"
-};

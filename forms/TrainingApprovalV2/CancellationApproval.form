@@ -261,6 +261,23 @@
             ]
         },
         {
+            "id": "cancellation_reson",
+            "type": "section",
+            "title": "Cancellation Reson",
+            "content": [
+                {
+                    "id": "reason",
+                    "type": "string",
+                    "label": "Reason",
+                    "readOnly": true,
+                    "value": "${context.cancelReason}",
+                    "constraints": {
+                        "required": false
+                    }
+                }
+            ]
+        },
+        {
             "id": "approval_list",
             "type": "section",
             "title": "Department Manager",
@@ -338,73 +355,6 @@
             ]
         },
         {
-            "id": "all_list",
-            "type": "section",
-            "title": "Notification List",
-            "content": [
-                {
-                    "id": "approval",
-                    "type": "collection",
-                    "title": "",
-                    "addEnabled": false,
-                    "deleteEnabled": false,
-                    "value": "${context.approverList.ApproverSet.Approver}",
-                    "content": [
-                        {
-                            "id": "approver_id",
-                            "type": "string",
-                            "label": "Approver Id",
-                            "readOnly": true,
-                            "value": "${item.Agent}",
-                            "constraints": {
-                                "required": false
-                            }
-                        },
-                        {
-                            "id": "agent_name",
-                            "type": "string",
-                            "label": "Approver Name",
-                            "readOnly": true,
-                            "value": "${item.AgentName}",
-                            "constraints": {
-                                "required": false
-                            }
-                        },
-                        {
-                            "id": "position_name",
-                            "type": "string",
-                            "label": "Position name",
-                            "readOnly": true,
-                            "value": "${item.PositionName}",
-                            "constraints": {
-                                "required": false
-                            }
-                        },
-                        {
-                            "id": "mail",
-                            "type": "string",
-                            "label": "Mail",
-                            "readOnly": true,
-                            "value": "${item.AgentEmail}",
-                            "constraints": {
-                                "required": false
-                            }
-                        },
-                        {
-                            "id": "userid",
-                            "type": "string",
-                            "label": "UserId",
-                            "readOnly": true,
-                            "value": "${item.UserID}",
-                            "constraints": {
-                                "required": false
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
             "id": "Comment",
             "type": "section",
             "title": "Approver’s Comment",
@@ -431,12 +381,12 @@
     "decisions": [
         {
             "id": "approval",
-            "text": "Accept The Excuse",
+            "text": "Approve",
             "decisionType": "positive"
         },
         {
             "id": "reject",
-            "text": "Reject The Excuse",
+            "text": "Reject",
             "decisionType": "negative"
         }
     ]

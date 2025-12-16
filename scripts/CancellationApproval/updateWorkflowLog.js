@@ -1,29 +1,55 @@
 // Date formatting function - MUST be defined before use
-function formatDateToYYYYMMDD(dateStr) {
+function formatDateToYYYYMMDD(dateInput) {
     try {
-        if (!dateStr) {
+        if (!dateInput) {
             return "";
         }
 
-        // Handle YYYYMMDD format (already correct format)
-        if (typeof dateStr === "string" && dateStr.length === 8 && dateStr.indexOf('/') === -1 && !isNaN(dateStr)) {
-            return dateStr;
-        }
+        var date;
 
+        // Handle Date object
+        if (dateInput instanceof Date) {
+            date = dateInput;
+        }
+        // Handle SAP OData format: Date(milliseconds) or /Date(milliseconds)/
+        else if (typeof dateInput === "string" && (dateInput.indexOf("Date(") !== -1 || dateInput.indexOf("/Date(") !== -1)) {
+            var timestamp = dateInput.match(/Date\((\d+)\)/);
+            if (timestamp && timestamp[1]) {
+                date = new Date(parseInt(timestamp[1]));
+            } else {
+                return "";
+            }
+        }
         // Handle DD/MM/YYYY format
-        if (typeof dateStr === "string" && dateStr.indexOf("/") !== -1) {
-            var parts = dateStr.split("/");
+        else if (typeof dateInput === "string" && dateInput.indexOf("/") !== -1) {
+            var parts = dateInput.split("/");
             if (parts.length === 3) {
                 var day = parts[0];
                 var month = parts[1];
                 var year = parts[2];
                 return year + month + day; // Format: YYYYMMDD
             }
+            return "";
+        }
+        // Handle YYYYMMDD format (already correct)
+        else if (typeof dateInput === "string" && dateInput.length === 8 && !isNaN(dateInput)) {
+            return dateInput;
+        }
+        else {
+            return "";
+        }
+
+        // Convert date object to YYYYMMDD
+        if (date && !isNaN(date.getTime())) {
+            var year = date.getFullYear();
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+            return year + month + day; // Format: YYYYMMDD
         }
 
         return "";
     } catch (e) {
-        return "";
+        return ""; // Return empty string on error instead of original value
     }
 }
 
@@ -56,7 +82,7 @@ $.context.workflowRequest = {
 	employeeOrganizationId: $.context.employeeOrganizationId || "",
 	requestId: $.context.requestId || "",
 	trainingTypeId: "7" || "",
-	trainingTypeDesc:  "No Show",
+	trainingTypeDesc:  "Cancel By Employee",
 	classId: $.context.classId || "",
 	classTitle: $.context.classTitle || "",
 	classDescription: $.context.classDescription || "",
