@@ -44,8 +44,12 @@ var enrollmentStatusID;
 var withdrawalReason;
 
 if (isRejected) {
-    // Rejection: Status = Enrolled_by_Admin–IT_2002_Succ, Reason = empty
-    enrollmentStatusID = $.context.OrginalLMSStatus;
+    // Rejection: Set status based on trainingTypeId, Reason = empty
+    if ($.context.trainingTypeId === "11") {
+        enrollmentStatusID = "Enrolled_by_Admin–IT_2002_Succ";
+    } else {
+        enrollmentStatusID = "Enrolled_By_Approvers";
+    }
     withdrawalReason = "";
 } else {
     // Approval: Status = Cancelled_By_Employee, Reason = Cancelled_By_Employee
